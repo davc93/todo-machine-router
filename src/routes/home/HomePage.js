@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTodos } from '../useTodos';
 import { TodoHeader } from '../../UI/TodoHeader';
 import { TodoCounter } from '../../UI/TodoCounter';
@@ -15,20 +16,20 @@ import { ChangeAlert } from '../../UI/ChangeAlert';
 
 function HomePage() {
   const { state, stateUpdaters } = useTodos();
-
+  const navigate = useNavigate()
   const {
     error,
     loading,
     searchedTodos,
     totalTodos,
     completedTodos,
-    openModal,
+    // openModal,
     searchValue,
   } = state;
 
   const {
-    setOpenModal,
-    addTodo,
+    // setOpenModal,
+    // addTodo,
     completeTodo,
     deleteTodo,
     setSearchValue,
@@ -67,23 +68,28 @@ function HomePage() {
             text={todo.text}
             completed={todo.completed}
             onComplete={() => completeTodo(todo.id)}
-            onEdit={()=> console.log('edit')}
+            onEdit={()=> navigate('/edit/' + todo.id,{
+              state: {
+                todo
+              }
+            })}
             onDelete={() => deleteTodo(todo.id)}
           />
         )}
       </TodoList>
 
-      {!!openModal && (
+      {/* {!!openModal && (
         <Modal>
           <TodoForm
             addTodo={addTodo}
             setOpenModal={setOpenModal}
           />
         </Modal>
-      )}
-
+      )} */}
+      
       <CreateTodoButton
-        setOpenModal={setOpenModal}
+        onClick= {()=> navigate('/new')}
+        // setOpenModal={setOpenModal}
       />
 
       <ChangeAlert
